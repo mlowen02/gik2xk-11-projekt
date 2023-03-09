@@ -9,9 +9,10 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/:cartId/addProduct/:productId', (req, res) => {
+	const qty = req.body.amount;
 	const productId = req.params.productId;
 	const cartId = req.params.cartId;
-	cartService.addProduct(cartId, productId).then((result) => {
+	cartService.addProduct(cartId, productId, qty).then((result) => {
 		res.status(result.status).json(result.data);
 	});
 });
@@ -33,6 +34,15 @@ router.put('/', (req, res) => {
 router.delete('/', (req, res) => {
 	const id = req.body.id;
 	cartService.destroy(id).then((result) => {
+		res.status(result.status).json(result.data);
+	});
+});
+
+router.delete('/:cartId/removeProduct/:productId', (req, res) => {
+	const qty = req.body.amount;
+	const productId = req.params.productId;
+	const cartId = req.params.cartId;
+	cartService.removeProduct(cartId, productId, qty).then((result) => {
 		res.status(result.status).json(result.data);
 	});
 });

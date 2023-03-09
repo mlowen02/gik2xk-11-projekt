@@ -15,15 +15,18 @@ async function getById(id) {
 			where: { id },
 			include: [db.product],
 		});
+		if (!cart) {
+			return createResponseError(404, 'Cart not found');
+		}
 		return createResponseSuccess(cart);
 	} catch (error) {
 		return createResponseError(error.status, error.message);
 	}
 }
 
-async function addProduct(cartId, productId) {
-	if (!cartId || !productId) {
-		return createResponseError(422, 'Id not defined');
+async function addProduct(cartId, productId, amount) {
+	if (!cartId || !productId || !amount) {
+		return createResponseError(422, 'Request incomplete');
 	}
 	try {
 		const existingCart = await db.cart.findOne({ where: { id: cartId } });
@@ -31,21 +34,64 @@ async function addProduct(cartId, productId) {
 			where: { id: productId },
 		});
 
-		const existingCartProduct = await db.cartProduct.findOne({
+		if (!existingCart) {
+			return createResponseError(422, 'Invalid cart id');
+		}
+		if (!existingProduct) {
+			return createResponseError(422, 'Invalid product id');
+		}
+
+		let existingCartProduct = await db.cartProduct.findOne({
 			where: { cartId, productId },
 		});
-		console.log(existingCartProduct);
 		if (existingCartProduct) {
-			existingCartProduct.amount += 1;
-			await db.cartProduct.update(existingCartProduct, {
-				where: { id: existingCartProduct.id },
-			});
+			existingCartProduct.amount += +amount;
 		} else {
 			await existingCart.addProduct(existingProduct);
+			existingCartProduct = await db.cartProduct.findOne({
+				where: { cartId, productId },
+			});
+			existingCartProduct.amount = amount;
 		}
-		existingCart.priceTotal += existingProduct.price;
-		await db.cart.update(existingCart, { where: { id: cartId } });
 
+		existingCart.priceTotal += existingProduct.price * amount;
+		await existingCartProduct.save();
+		await existingCart.save();
+		return createResponseSuccess(existingCartProduct);
+	} catch (error) {
+		return createResponseError(error.status, error.message);
+	}
+}
+
+async function removeProduct(cartId, productId, amount) {
+	if (!cartId || !productId || !amount) {
+		return createResponseError(422, 'Request incomplete');
+	}
+	try {
+		const existingCart = await db.cart.findOne({ where: { id: cartId } });
+		const existingProduct = await db.product.findOne({
+			where: { id: productId },
+		});
+		if (!existingCart) {
+			return createResponseError(422, 'Invalid cart id');
+		}
+
+		let existingCartProduct = await db.cartProduct.findOne({
+			where: { cartId, productId },
+		});
+		if (!existingCartProduct) {
+			return createResponseError(422, 'Item not in cart');
+		}
+		if (existingCartProduct.amount < +amount) {
+			existingCart.priceTotal -=
+				existingProduct.price * existingCartProduct.amount;
+			await existingCartProduct.destroy();
+		} else {
+			existingCartProduct.amount -= +amount;
+			existingCart.priceTotal -= amount * existingProduct.price;
+		}
+		await existingCartProduct.save();
+		await existingCart.save();
 		return createResponseSuccess(existingCartProduct);
 	} catch (error) {
 		return createResponseError(error.status, error.message);
@@ -53,7 +99,6 @@ async function addProduct(cartId, productId) {
 }
 
 async function create(cart) {
-	cart.priceTotal = 0;
 	try {
 		const newCart = await db.cart.create(cart);
 
@@ -71,7 +116,7 @@ async function update(id, cart) {
 	try {
 		const existingCart = await db.cart.findOne({ where: { id } });
 		if (!existingCart) {
-			return createResponseError(404, `product with id ${id} not found`);
+			return createResponseError(404, `cart with id ${id} not found`);
 		}
 		await db.cart.update(cart, { where: { id } });
 
@@ -99,4 +144,5 @@ module.exports = {
 	update,
 	destroy,
 	addProduct,
+	removeProduct,
 };
