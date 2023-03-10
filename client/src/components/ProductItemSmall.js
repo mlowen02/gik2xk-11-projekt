@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAverageScore } from '../models/ProductModel';
+import { getAverageScore } from '../models/ScoreModel';
 import Rating from '@mui/material/Rating';
 function ProductItemSmall({ product }) {
 	const [average, setAverage] = useState([]);
