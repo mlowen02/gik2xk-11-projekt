@@ -33,16 +33,6 @@ function App() {
 					<Route exact path="/Products" element={<Products></Products>}></Route>
 					<Route
 						exact
-						path="/users/:id/Products"
-						element={<Products></Products>}
-					></Route>
-					<Route
-						exact
-						path="/tags/:name/Products"
-						element={<Products></Products>}
-					></Route>
-					<Route
-						exact
 						path="/Products/new"
 						element={<ProductEdit></ProductEdit>}
 					></Route>

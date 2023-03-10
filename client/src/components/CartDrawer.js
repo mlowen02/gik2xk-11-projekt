@@ -5,8 +5,14 @@ import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import { getCartById } from '../models/CartModel';
+import ProductItemSmall from './ProductItemSmall';
 
 export default function CartDrawer() {
+	const [cart, setCart] = React.useState({});
+	React.useEffect(() => {
+		getCartById(1).then((cart) => setCart(cart));
+	}, []);
 	const [state, setState] = React.useState({
 		right: false,
 	});
@@ -30,11 +36,15 @@ export default function CartDrawer() {
 			onKeyDown={toggleDrawer(anchor, false)}
 		>
 			<List>
-				<div>Produkt1</div>
-				<Divider />
-				<div>Produkt2</div>
-				<Divider />
-				<div>Produkt3</div>
+				{cart?.products &&
+					cart.products.map((product) => {
+						return (
+							<li key={`cartItemId_${product}`}>
+								<ProductItemSmall product={product} />;
+								<Divider />
+							</li>
+						);
+					})}
 			</List>
 		</Box>
 	);

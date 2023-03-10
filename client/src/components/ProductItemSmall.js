@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { getAverageScore } from '../models/ScoreModel';
 import Rating from '@mui/material/Rating';
 function ProductItemSmall({ product }) {
-	const [average, setAverage] = useState([]);
+	const [average, setAverage] = useState(0);
 	const avg = async () => {
 		const avg = await getAverageScore(product.id);
 		if (!isNaN(avg)) {
@@ -12,7 +12,6 @@ function ProductItemSmall({ product }) {
 		}
 	};
 	avg();
-
 	return product ? (
 		<>
 			<div>

@@ -1,6 +1,9 @@
 import api from '../api.js';
 
 export async function getAverageScore(id) {
+	if (isNaN(id)) {
+		return;
+	}
 	var average = 0;
 	const scores = await getScores(id);
 	scores.forEach((score) => {
