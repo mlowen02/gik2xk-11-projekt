@@ -1,7 +1,8 @@
 import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAverageScore } from '../models/ScoreModel';
+import { getAverageScore } from '../models/ProductModel';
+import Rating from '@mui/material/Rating';
 function ProductItemSmall({ product }) {
 	const [average, setAverage] = useState([]);
 	const avg = async () => {
@@ -26,7 +27,8 @@ function ProductItemSmall({ product }) {
 						<div>{product.name}</div>
 					</Link>
 				</Typography>
-				<p>Rating: {`${average}/5`}</p>
+
+				<Rating name="Rating" value={average} precision={0.1} readOnly />
 			</div>
 		</>
 	) : (

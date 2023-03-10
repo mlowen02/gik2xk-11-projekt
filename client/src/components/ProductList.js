@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getAll } from '../models/ProductModel';
 import ProductItemSmall from './ProductItemSmall';
+import Divider from '@mui/material/Divider';
 
 function ProductList({ pathname }) {
 	const [products, setProducts] = useState([]);
@@ -16,6 +17,7 @@ function ProductList({ pathname }) {
 						<li key={`ProductId_${product.id}`}>
 							<Box mb={10}>
 								<ProductItemSmall product={product} />
+								<Divider />
 							</Box>
 						</li>
 					);
