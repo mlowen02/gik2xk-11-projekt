@@ -5,6 +5,7 @@ import Products from './views/Products';
 import ProductEdit from './views/ProductEdit';
 import ProductDetail from './views/ProductDetail';
 import Home from './views/Home';
+import CartDrawer from './components/CartDrawer';
 
 function App() {
 	return (
@@ -22,6 +23,7 @@ function App() {
 						<Typography variant="h6" component="div" sx={{ flexGrow: 0.5 }}>
 							<Link to="/Products/new">Create product</Link>
 						</Typography>
+						<CartDrawer />
 					</Toolbar>
 				</AppBar>
 			</Box>
