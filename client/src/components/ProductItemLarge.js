@@ -8,7 +8,7 @@ function ProductItemLarge({ product }) {
 				<ProductItemSmall product={product} />
 			</div>
 			<div>
-				<p>{product.createdAt}</p>
+				<p>Created at: {product.createdAt}</p>
 			</div>
 			<div>
 				<Typography variant="h6">Ratings</Typography>
