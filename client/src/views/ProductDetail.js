@@ -1,6 +1,7 @@
 import { Box, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import CartAdd from '../components/CartAdd';
 import ProductItemLarge from '../components/ProductItemLarge';
 import ScoreField from '../components/ScoreField';
 import { addScore, getOne } from '../models/ProductModel';
@@ -31,6 +32,9 @@ function ProductDetail() {
 			<Box mt={5}>
 				<ProductItemLarge product={product} />
 			</Box>
+			<div>
+				<CartAdd></CartAdd>
+			</div>
 			<div>
 				<ScoreField onSave={onScoreAdd}></ScoreField>
 			</div>

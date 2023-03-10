@@ -1,4 +1,4 @@
-import { Button, Typography, TextField } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAverageScore } from '../models/ProductModel';
@@ -29,11 +29,6 @@ function ProductItemSmall({ product }) {
 				</Typography>
 
 				<Rating name="Rating" value={average} precision={0.1} readOnly />
-				<div>
-					<Typography variant="h6">Add to Cart:</Typography>
-					<TextField id="outlined-basic" label="Amount:" variant="outlined" />
-					<Button variant="contained">Add product(s)</Button>
-				</div>
 			</div>
 		</>
 	) : (

@@ -1,5 +1,6 @@
-import { Chip, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import ProductItemSmall from './ProductItemSmall';
+import Ratings from './Ratings';
 
 function ProductItemLarge({ product }) {
 	return product ? (
@@ -11,11 +12,8 @@ function ProductItemLarge({ product }) {
 				<p>Created at: {product.createdAt}</p>
 			</div>
 			<div>
-				<Typography variant="h6">Ratings</Typography>
-				{product.scores &&
-					product.scores.map((score) => {
-						return <Chip key={score.id} label={`${score.score}/5`}></Chip>;
-					})}
+				<Typography variant="h6">Ratings:</Typography>
+				<Ratings scores={product.scores}></Ratings>
 			</div>
 		</>
 	) : (
