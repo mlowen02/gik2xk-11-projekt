@@ -13,7 +13,7 @@ function ProductItemLarge({ product }) {
 			</div>
 			<div>
 				<Typography variant="h6">Ratings:</Typography>
-				<Ratings scores={product.scores}></Ratings>
+				<Ratings scores={product.scores} />
 			</div>
 		</>
 	) : (

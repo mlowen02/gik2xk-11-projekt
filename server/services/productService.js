@@ -6,12 +6,12 @@ const {
 	createResponseSuccess,
 } = require('../helpers/responseHelper');
 const constraints = {
-	title: {
+	name: {
 		length: {
-			minimum: 2,
+			minimum: 3,
 			maximum: 100,
-			tooShort: '^Titeln måste vara minst %{count} tecken lång',
-			tooLong: "'Titeln får inte vara längre än %{count} tecken",
+			tooShort: '^The name must be at least %{count} characters long',
+			tooLong: "'The name can not be longer than %{count} characters",
 		},
 	},
 };
@@ -58,7 +58,7 @@ async function getScores(id) {
 
 async function addScore(id, score) {
 	if (!id) {
-		return createResponseError(422, 'Id of post not defined');
+		return createResponseError(422, 'Id of product not defined');
 	}
 	try {
 		score.productId = id;

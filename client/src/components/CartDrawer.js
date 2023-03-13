@@ -29,6 +29,7 @@ export default function CartDrawer() {
 		setState({ ...state, [anchor]: open });
 	};
 	function editItemInCart(cartId, productId, qty) {
+		console.log(qty);
 		if (qty < 0) {
 			removeFromCart(cartId, productId, -qty).then((result) =>
 				console.log(result, 'removed')
@@ -74,7 +75,13 @@ export default function CartDrawer() {
 										<Button
 											variant="contained"
 											color="primary"
-											onClick={() => {}}
+											onClick={() => {
+												editItemInCart(
+													1,
+													product.id,
+													-product.cartProduct.amount
+												);
+											}}
 										>
 											<DeleteIcon />
 										</Button>

@@ -10,7 +10,6 @@ router.get('/:id', (req, res) => {
 
 router.get('/:id/getScores', (req, res) => {
 	const id = req.params.id;
-	console.log(id);
 	productService.getScores(id).then((result) => {
 		res.status(result.status).json(result.data);
 	});
