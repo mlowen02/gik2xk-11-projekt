@@ -82,7 +82,7 @@ async function removeProduct(cartId, productId, amount) {
 		if (!existingCartProduct) {
 			return createResponseError(422, 'Item not in cart');
 		}
-		if (existingCartProduct.amount < +amount) {
+		if (existingCartProduct.amount <= +amount) {
 			existingCart.priceTotal -=
 				existingProduct.price * existingCartProduct.amount;
 			await existingCartProduct.destroy();

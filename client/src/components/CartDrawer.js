@@ -5,8 +5,10 @@ import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import { getCartById } from '../models/CartModel';
+import { addToCart, getCartById, removeFromCart } from '../models/CartModel';
 import ProductItemSmall from './ProductItemSmall';
+import { Button, Grid, TextField } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function CartDrawer() {
 	const [cart, setCart] = React.useState({});
@@ -16,7 +18,6 @@ export default function CartDrawer() {
 	const [state, setState] = React.useState({
 		right: false,
 	});
-
 	const toggleDrawer = (anchor, open) => (event) => {
 		if (
 			event.type === 'keydown' &&
@@ -27,24 +28,63 @@ export default function CartDrawer() {
 
 		setState({ ...state, [anchor]: open });
 	};
+	function editItemInCart(cartId, productId, qty) {
+		if (qty < 0) {
+			removeFromCart(cartId, productId, -qty).then((result) =>
+				console.log(result, 'removed')
+			);
+		} else {
+			addToCart(cartId, productId, qty).then((result) => console.log(result));
+		}
+	}
 
 	const list = (anchor) => (
 		<Box
 			sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 500 }}
 			role="presentation"
-			onClick={toggleDrawer(anchor, false)}
+			onClick={toggleDrawer(anchor, true)}
 			onKeyDown={toggleDrawer(anchor, false)}
 		>
 			<List>
 				{cart?.products &&
 					cart.products.map((product) => {
 						return (
-							<li key={`cartItemId_${product}`}>
-								<ProductItemSmall product={product} />;
+							<li key={`cartItemId_${product.id}`}>
+								<Grid container columnSpacing={2} p={2}>
+									<Grid item xs={12} md={6}>
+										<ProductItemSmall product={product} />
+									</Grid>
+									<Grid item xs={12} md={6}>
+										<TextField
+											InputProps={{ inputProps: { min: 0 } }}
+											defaultValue={product.cartProduct.amount}
+											id="outlined-basic"
+											label="Amount:"
+											variant="outlined"
+											type="number"
+											onChange={(e) => {
+												editItemInCart(
+													1,
+													product.id,
+													e.target.value - product.cartProduct.amount
+												);
+											}}
+										/>
+										<p>Price: {product.cartProduct.amount * product.price}</p>
+										<Button
+											variant="contained"
+											color="primary"
+											onClick={() => {}}
+										>
+											<DeleteIcon />
+										</Button>
+									</Grid>
+								</Grid>
 								<Divider />
 							</li>
 						);
 					})}
+				{cart?.products && <p>Total: {cart.priceTotal}</p>}
 			</List>
 		</Box>
 	);

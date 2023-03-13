@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import CartAdd from '../components/CartAdd';
 import ProductItemLarge from '../components/ProductItemLarge';
 import ScoreField from '../components/ScoreField';
+import { addToCart } from '../models/CartModel';
 import { addScore, getOne } from '../models/ProductModel';
 
 function ProductDetail() {
@@ -27,13 +28,17 @@ function ProductDetail() {
 		addScore(productId, 1, scoreToAdd);
 	}
 
+	function onProductAdd(cartId = 1, qty) {
+		addToCart(cartId, productId, qty).then((result) => console.log(result));
+	}
+
 	return (
 		<>
 			<Box mt={5}>
 				<ProductItemLarge product={product} />
 			</Box>
 			<div>
-				<CartAdd></CartAdd>
+				<CartAdd onAdd={onProductAdd} />
 			</div>
 			<div>
 				<ScoreField onSave={onScoreAdd}></ScoreField>
