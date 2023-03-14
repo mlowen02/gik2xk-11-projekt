@@ -1,13 +1,17 @@
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
 import { addToCart, getCartById, removeFromCart } from '../models/CartModel';
 import ProductItemSmall from './ProductItemSmall';
-import { Button, Grid, TextField } from '@mui/material';
+import {
+	Button,
+	Grid,
+	TextField,
+	Divider,
+	IconButton,
+	List,
+	Drawer,
+	Box,
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function CartDrawer() {
@@ -15,6 +19,15 @@ export default function CartDrawer() {
 	React.useEffect(() => {
 		getCartById(1).then((cart) => setCart(cart));
 	}, []);
+
+	function fetchCart() {
+		getCartById(1).then((cart) => {
+			setCart({
+				cart,
+			});
+		});
+		//window.location.reload();
+	}
 	const [state, setState] = React.useState({
 		right: false,
 	});
@@ -29,7 +42,6 @@ export default function CartDrawer() {
 		setState({ ...state, [anchor]: open });
 	};
 	function editItemInCart(cartId, productId, qty) {
-		console.log(qty);
 		if (qty < 0) {
 			removeFromCart(cartId, productId, -qty).then((result) =>
 				console.log(result, 'removed')
@@ -37,6 +49,7 @@ export default function CartDrawer() {
 		} else {
 			addToCart(cartId, productId, qty).then((result) => console.log(result));
 		}
+		fetchCart();
 	}
 
 	const list = (anchor) => (
@@ -44,7 +57,7 @@ export default function CartDrawer() {
 			sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 500 }}
 			role="presentation"
 			onClick={toggleDrawer(anchor, true)}
-			onKeyDown={toggleDrawer(anchor, false)}
+			onKeyDown={toggleDrawer(anchor, true)}
 		>
 			<List>
 				{cart?.products &&
@@ -63,7 +76,7 @@ export default function CartDrawer() {
 											label="Amount:"
 											variant="outlined"
 											type="number"
-											onChange={(e) => {
+											onBlur={(e) => {
 												editItemInCart(
 													1,
 													product.id,

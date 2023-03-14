@@ -14,7 +14,6 @@ function CartAdd({ onAdd }) {
 				type="number"
 				onChange={(e) => {
 					qty = e.target.value;
-					console.log(qty);
 				}}
 			/>
 			<Button variant="contained" onClick={() => onAdd(1, qty)}>
