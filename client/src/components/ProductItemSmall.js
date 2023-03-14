@@ -26,7 +26,7 @@ function ProductItemSmall({ product }) {
 						<div>{product.name}</div>
 					</Link>
 				</Typography>
-
+				<Typography variant="h6">Price: {product.price}</Typography>
 				<Rating name="Rating" value={average} precision={0.1} readOnly />
 			</div>
 		</>
