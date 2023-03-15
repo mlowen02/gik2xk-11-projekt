@@ -1,33 +1,9 @@
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import * as React from 'react';
-import { addToCart, getCartById, removeFromCart } from '../models/CartModel';
-import ProductItemSmall from './ProductItemSmall';
-import {
-	Button,
-	Grid,
-	TextField,
-	Divider,
-	IconButton,
-	List,
-	Drawer,
-	Box,
-} from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { IconButton, Drawer, Box } from '@mui/material';
+import CartItemList from './CartItemList';
 
 export default function CartDrawer() {
-	const [cart, setCart] = React.useState({});
-	React.useEffect(() => {
-		getCartById(1).then((cart) => setCart(cart));
-	}, []);
-
-	function fetchCart() {
-		getCartById(1).then((cart) => {
-			setCart({
-				cart,
-			});
-		});
-		//window.location.reload();
-	}
 	const [state, setState] = React.useState({
 		right: false,
 	});
@@ -41,16 +17,6 @@ export default function CartDrawer() {
 
 		setState({ ...state, [anchor]: open });
 	};
-	function editItemInCart(cartId, productId, qty) {
-		if (qty < 0) {
-			removeFromCart(cartId, productId, -qty).then((result) =>
-				console.log(result, 'removed')
-			);
-		} else {
-			addToCart(cartId, productId, qty).then((result) => console.log(result));
-		}
-		fetchCart();
-	}
 
 	const list = (anchor) => (
 		<Box
@@ -59,53 +25,7 @@ export default function CartDrawer() {
 			onClick={toggleDrawer(anchor, true)}
 			onKeyDown={toggleDrawer(anchor, true)}
 		>
-			<List>
-				{cart?.products &&
-					cart.products.map((product) => {
-						return (
-							<li key={`cartItemId_${product.id}`}>
-								<Grid container columnSpacing={2} p={2}>
-									<Grid item xs={12} md={6}>
-										<ProductItemSmall product={product} />
-									</Grid>
-									<Grid item xs={12} md={6}>
-										<TextField
-											InputProps={{ inputProps: { min: 0 } }}
-											defaultValue={product.cartProduct.amount}
-											id="outlined-basic"
-											label="Amount:"
-											variant="outlined"
-											type="number"
-											onBlur={(e) => {
-												editItemInCart(
-													1,
-													product.id,
-													e.target.value - product.cartProduct.amount
-												);
-											}}
-										/>
-										<p>Price: {product.cartProduct.amount * product.price}</p>
-										<Button
-											variant="contained"
-											color="primary"
-											onClick={() => {
-												editItemInCart(
-													1,
-													product.id,
-													-product.cartProduct.amount
-												);
-											}}
-										>
-											<DeleteIcon />
-										</Button>
-									</Grid>
-								</Grid>
-								<Divider />
-							</li>
-						);
-					})}
-				{cart?.products && <p>Total: {cart.priceTotal}</p>}
-			</List>
+			<CartItemList />
 		</Box>
 	);
 

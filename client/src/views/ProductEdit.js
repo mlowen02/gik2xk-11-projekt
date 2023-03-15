@@ -1,4 +1,4 @@
-import { TextField, Button, Chip } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { create, getOne, remove, update } from '../models/ProductModel';
@@ -13,7 +13,6 @@ function ProductEdit() {
 		imageUrl: '',
 		scores: [],
 	};
-
 	const [product, setProduct] = useState(emptyProduct);
 
 	useEffect(() => {

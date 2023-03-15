@@ -18,7 +18,7 @@ async function getById(id) {
 		if (!cart) {
 			return createResponseError(404, 'Cart not found');
 		}
-		return createResponseSuccess(cart);
+		return createResponseSuccess(_cleanCartObj(cart));
 	} catch (error) {
 		return createResponseError(error.status, error.message);
 	}
@@ -68,7 +68,10 @@ async function removeProduct(cartId, productId, amount) {
 		return createResponseError(422, 'Request incomplete');
 	}
 	try {
-		const existingCart = await db.cart.findOne({ where: { id: cartId } });
+		const existingCart = await db.cart.findOne({
+			where: { id: cartId },
+			include: [db.product],
+		});
 		const existingProduct = await db.product.findOne({
 			where: { id: productId },
 		});
@@ -135,6 +138,28 @@ async function destroy(id) {
 	} catch {
 		return createResponseError(error.status, error.message);
 	}
+}
+
+function _cleanCartObj(cart) {
+	const cartObj = {
+		id: cart.id,
+		priceTotal: cart.priceTotal,
+		createdAt: cart.createdAt,
+	};
+	if (cart.products) {
+		cartObj.products = [];
+		cart.products.map((product) => {
+			return cartObj.products.push({
+				id: product.id,
+				name: product.name,
+				description: product.description,
+				imageUrl: product.imageUrl,
+				price: product.price,
+				amount: product.cartProduct.amount,
+			});
+		});
+	}
+	return cartObj;
 }
 
 module.exports = {
