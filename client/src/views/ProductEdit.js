@@ -23,6 +23,7 @@ function ProductEdit() {
 		} else {
 			setProduct(emptyProduct);
 		}
+		// eslint-disable-next-line
 	}, [productId]);
 
 	function onChange(e) {

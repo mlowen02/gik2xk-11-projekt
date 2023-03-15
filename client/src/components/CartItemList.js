@@ -18,12 +18,10 @@ function CartItemList() {
 		if (qty < 0) {
 			removeFromCart(cartId, productId, -qty).then((result) => {
 				fetchCart();
-				console.log(cart);
 			});
 		} else {
 			addToCart(cartId, productId, qty).then((result) => {
 				fetchCart();
-				console.log(cart);
 			});
 		}
 	}

@@ -14,25 +14,33 @@ function ProductDetail() {
 	const [product, setProduct] = useState({});
 
 	useEffect(() => {
+		refreshProduct();
+		// eslint-disable-next-line
+	}, [productId]);
+
+	function refreshProduct() {
 		getOne(productId).then((product) => {
 			setProduct(product);
 		});
-	}, [productId]);
+	}
 
 	const navigate = useNavigate();
 	const goBack = (num) => {
 		navigate(-num);
 	};
-
 	function onScoreAdd(scoreToAdd) {
-		addScore(productId, 1, scoreToAdd);
+		addScore(productId, 1, scoreToAdd).then((result) => {
+			refreshProduct();
+		});
 	}
 
 	function onProductAdd(cartId = 1, qty) {
-		addToCart(cartId, productId, qty).then((result) => console.log(result));
+		if (qty > 0) {
+			addToCart(cartId, productId, qty).then((result) => console.log(result));
+		}
 	}
 
-	return (
+	return product ? (
 		<>
 			<Box mt={5}>
 				<ProductItemLarge product={product} />
@@ -61,6 +69,8 @@ function ProductDetail() {
 				Back
 			</Button>
 		</>
+	) : (
+		<>Product missing</>
 	);
 }
 
