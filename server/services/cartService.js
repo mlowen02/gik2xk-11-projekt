@@ -100,8 +100,9 @@ async function removeProduct(cartId, productId, amount) {
 	}
 }
 
-async function create(cart) {
+async function create(cart, id) {
 	try {
+		cart.userId = id;
 		const newCart = await db.cart.create(cart);
 
 		return createResponseSuccess(newCart);

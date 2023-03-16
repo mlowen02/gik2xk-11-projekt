@@ -9,6 +9,7 @@ function ProductItemLarge({ product }) {
 				<ProductItemSmall product={product} />
 			</div>
 			<div>
+				<p>{product.description}</p>
 				<p>Created at: {product.createdAt}</p>
 			</div>
 			<div>

@@ -17,8 +17,9 @@ router.post('/:cartId/addProduct/:productId', (req, res) => {
 	});
 });
 
-router.post('/', (req, res) => {
-	cartService.create(req.body).then((result) => {
+router.post('/:id', (req, res) => {
+	const userId = req.params.id;
+	cartService.create(req.body, userId).then((result) => {
 		res.status(result.status).json(result.data);
 	});
 });

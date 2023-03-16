@@ -61,6 +61,9 @@ db.product.hasMany(db.score, {
 db.cart.belongsToMany(db.product, { through: db.cartProduct });
 db.product.belongsToMany(db.cart, { through: db.cartProduct });
 
+db.cart.belongsTo(db.user, { foreignKey: { allowNull: false } });
+db.user.hasMany(db.cart, { allowNull: false, onDelete: 'CASCADE' });
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
