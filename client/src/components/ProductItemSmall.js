@@ -19,8 +19,8 @@ function ProductItemSmall({ product }) {
 					<Link to={`/products/${product.id}`}>
 						<img
 							alt={product.name}
-							height="100"
-							width="100"
+							height="150"
+							width="150"
 							src={product.imageUrl}
 						/>
 						<div>{product.name}</div>
